@@ -45,14 +45,22 @@ async function analyze() {
     if (inputValue >= ys["P97"]) percentileLabel = "高於 P97";
 
     // 更新結果顯示
-    resultDiv.innerHTML += `
-      <div style="margin-top:20px; padding:10px; background:#fce5f1; border-left:5px solid ${color};">
-        ✔️ 類型：${data.label}<br/>
-        ✔️ 月齡：<strong>${monthAge}</strong> 個月<br/>
-        ✔️ ${data.unit_y}：<strong>${inputValue}</strong><br/>
-        ✔️ 位於：<strong>${percentileLabel}</strong> 百分位
-      </div>
-    `;
+  const typeLabelMap = {
+  height: "身高",
+  weight: "體重",
+  head: "頭圍",
+  height_weight: "身高 + 體重"
+  };
+
+  const type = document.getElementById("type").value;
+  const typeLabel = typeLabelMap[type] || "未知類型";
+
+  resultDiv.innerHTML = `
+    ✔️ 類型：${typeLabel}<br>
+    ✔️ 月齡：${ageMonths} 個月<br>
+    ✔️ ${typeLabel}：${value} ${unit}<br>
+    ✔️ 位於：${percentile}
+  `;
 
     // 整理圖表資料
     const datasets = ordered.map(p => ({
